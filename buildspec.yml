@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installing dependencies for CI environment..."
+      - npm ci
+  pre_build:
+    commands:
+      - echo "Executing automated test suite..."
+      - npm test
+  build:
+    commands:
+      - echo "Preparing production deployment artifact..."
+      - npm prune --production
+artifacts:
+  files:
+    - '**/*'
+  name: build-artifact.zip
