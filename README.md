@@ -206,30 +206,6 @@ AWS CodePipeline manages the flow between source changes, build execution, and a
 2. **Execution Flow:**
    * Once created, CodePipeline runs an initial execution. It pulls source code from CodeCommit, triggers the CodeBuild container, executes unit tests, and stores the resulting archive in an S3 bucket.
 
-*(Placeholder: Insert screenshot of the generated S3 Bucket artifact here)*
-
-***
-
-## Phase 6: Continuous Integration Automation Validation
-To verify end-to-end automation, changes must trigger the pipeline without manual intervention.
-
-1. **Introduce a State Change:**
-   * Update the status payload in `app.js` to verify pipeline change detection:
-     ```javascript
-     message: 'CI/CD Reference Architecture API is operational v2'
-     ```
-2. **Commit and Push to CodeCommit:**
-   ```bash
-   git add app.js
-   git commit -m "fix: update health check response payload for automation validation"
-   git push -4 origin main
-   ```
-3. **Verify Execution:**
-   * Amazon EventBridge detects the commit on the `main` branch.
-   * CodePipeline triggers automatically, transitioning the Source stage and Build stage to "In Progress", and then "Succeeded".
-   * CodeBuild runs the test suite and exports the updated artifact to Amazon S3.
-
-***
 
 ## IAM Roles & Access Governance
 This project relies on strictly scoped service roles rather than long-lived user credentials:
@@ -240,20 +216,3 @@ This project relies on strictly scoped service roles rather than long-lived user
 | `<CODEPIPELINE_IAM_ROLE_NAME>` | Pipeline orchestration engine | Permissions to invoke CodeBuild, monitor CodeCommit, and read/write to the pipeline S3 bucket |
 
 ***
-
-## Troubleshooting & Operational Edge Cases
-
-* **AWS CodeCommit Authentication Hang on Linux:**
-  * *Symptom:* The terminal hangs indefinitely when executing `git push origin main`.
-  * *Root Cause:* The operating system credential manager is waiting for an interactive GUI prompt, or the connection is stalling over an unsupported IPv6 route.
-  * *Resolution:* Run `git config --local credential.helper ""` to force terminal-based credential input, and append `-4` (`git push -4 origin main`) to route traffic over IPv4.
-
-* **Pipeline Failures at the `pre_build` Phase:**
-  * *Symptom:* CodeBuild exits with an error status during the `pre_build` phase.
-  * *Root Cause:* One or more Jest assertions failed in `tests/app.test.js`.
-  * *Resolution:* The pipeline is designed to halt on failing tests. Check the Amazon CloudWatch logs for details on the failed assertion, fix the issue locally, verify that `npm test` passes, and push a new commit.
-
-* **Lockfile Inconsistencies During `npm ci`:**
-  * *Symptom:* CodeBuild fails during the install phase with an `npm ERR!` lockfile error.
-  * *Root Cause:* Dependencies in `package.json` were added or updated without committing the matching `package-lock.json`.
-  * *Resolution:* Run `npm install` locally to update `package-lock.json`, and commit both files together before pushing to the repository.
