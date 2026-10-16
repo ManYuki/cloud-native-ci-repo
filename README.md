@@ -3,7 +3,7 @@
 ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white) ![AWS CodeCommit](https://img.shields.io/badge/AWS_CodeCommit-F58536?style=for-the-badge&logo=amazon-aws&logoColor=white) ![Node.js](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) ![Jest](https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white) ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
 
 ## Overview
-This repository provides an enterprise reference implementation for an automated, cloud-native Continuous Integration (CI) pipeline engineered exclusively within the AWS ecosystem. Leveraging AWS CodeCommit, AWS CodeBuild, and AWS CodePipeline, this architecture establishes an automated release pipeline that detects source changes, executes containerized unit test gates, purges non-production dependencies, and packages verified deployment artifacts securely in Amazon S3.
+This repository provides reference implementation for an automated, cloud-native Continuous Integration (CI) pipeline engineered within AWS. Leveraging AWS CodeCommit, AWS CodeBuild, and AWS CodePipeline, this architecture establishes an automated release pipeline that detects source changes, executes containerized unit test gates, purges non-production dependencies, and packages verified deployment artifacts securely in Amazon S3.
 
 ## Why This Matters (Business Value & Architectural Principles)
 * **Zero Infrastructure Maintenance:** Replaces traditional, self-hosted CI servers (such as static Jenkins runners) with ephemeral AWS compute environments, eliminating manual OS patching, server sizing, and idle compute costs.
@@ -41,7 +41,6 @@ This repository provides an enterprise reference implementation for an automated
        └──► git push github main  ──► [GitHub Public Portfolio Mirror]
 ```
 
-*(Placeholder: Insert screenshot of successful AWS CodePipeline execution here)*
 
 ***
 
